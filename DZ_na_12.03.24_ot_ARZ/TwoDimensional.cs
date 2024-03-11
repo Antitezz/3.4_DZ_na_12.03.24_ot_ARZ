@@ -1,11 +1,12 @@
 ﻿using System;
-sealed class TwoDimensional : MainClass, InterfaceTwoDimensional //ДВУМЕРНЫЙ МАССИВ
+sealed class TwoDimensional :ArrayBase //ДВУМЕРНЫЙ МАССИВ
 {
-    private Random random = new Random();
-    private int[,] _array;
-    public TwoDimensional(bool consoleValues = false)
+private T[,] _array;
+    private IElementGenerator<T> _elementGenerator;
+    public TwoDimension(IElementGenerator<T> elementGenerator, bool consoleValues = false)
     {
-        CreateAgain(consoleValues);
+        _elementGenerator = elementGenerator;
+        CreateArray(consoleValues);
     }
 
     public override void CreateAgain(bool consoleValues = false)
@@ -34,12 +35,13 @@ sealed class TwoDimensional : MainClass, InterfaceTwoDimensional //ДВУМЕР�
     {
         for (int i = 0; i < _array.GetLength(0); i++)
         {
-            Console.WriteLine("Введите значения в 1 строку в 1 строке с пробелами между элементами: ");
+            Console.WriteLine($"Введите значения 1 строки в 1 строке с пробелами между элементами.(тип должен быть: {typeof(T)})");
             string input = Console.ReadLine();
-            string[] input_lst = input.Split();
+            string[] inputList = input.Split();
             for (int j = 0; j < _array.GetLength(1); j++)
             {
-                _array[i, j] = int.Parse(input_lst[j]);
+                T inputToType = (T)Convert.ChangeType(inputList[j], typeof(T));
+                _array[i, j] = inputToType;
             }
         }
         Console.WriteLine();
@@ -51,49 +53,24 @@ sealed class TwoDimensional : MainClass, InterfaceTwoDimensional //ДВУМЕР�
         {
             for (int j = 0; j < _array.GetLength(1); j++)
             {
-                _array[i, j] = random.Next(0, 100);
+                _array[i, j] = _elementGenerator.GenerateRandom();
             }
         }
     }
-
-    protected override void RandomArray()
+    
+    public override void Print()
     {
-        for (int i = 0; i < _array.GetLength(0); i++)
+        for (int i = 0; i<_array.GetLength(0); i++)
         {
-            for (int j = 0; j < _array.GetLength(1); j++)
+            for (int j = 0; j<_array.GetLength(1); j++)
             {
-                _array[i, j] = random.Next(0, 100);
+                Console.Write($"{_array[i, j]} ");
             }
+            Console.WriteLine();
         }
-    }
-
-
-
-    public override void middleValue()//СРЕДНЕЕ ЗНАЧЕНИЕ ДВУМЕРНОГО МАССИВА:
-    {
-        Console.WriteLine("\nTask 4");
-        int summ = 0;
-        foreach (int number in _array)
-        {
-            summ += number;
-        }
-        decimal avg = summ / _array.Length;
-        Console.WriteLine($"Average = {avg}");
-    }
-
-    public override void Print() //ВЫВОД ДВУМЕРНОГО  МАССИВА:
-    {
-        Console.WriteLine("Вывод массива:");
-
-        for (int x = 0; x < _array.GetLength(0); x++)
-        {
-            for (int y = 0; y < _array.GetLength(1); y++)
-            {
-                Console.Write(_array[x, y] + " ");
-            }
-            Console.WriteLine(" ");
-        }
-
+        Console.WriteLine("И массив с перевернутыми четными строками:");
+        PrintSnake();
+        Console.WriteLine();
     }
 
     public void PrintSnake()
