@@ -15,6 +15,6 @@ public abstract class ArrayBase : InterfaceDimension
     protected abstract void InputArray();
     protected abstract void RandomArray();
     public abstract void Print();
-    public abstract void Createagain(bool consoleValues = false);
+    public abstract void CreateAgain(bool consoleValues = false);
 }
 
