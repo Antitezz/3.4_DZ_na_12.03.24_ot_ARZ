@@ -1,5 +1,5 @@
 ﻿using System;
-interface  : InterfaceDimension
+interface  : InterfaceDimensional
 {
     void PublicInputArray();
     void PublicRandomArray();
