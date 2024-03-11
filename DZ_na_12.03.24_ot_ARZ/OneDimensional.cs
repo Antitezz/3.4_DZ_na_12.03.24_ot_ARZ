@@ -1,11 +1,12 @@
 ﻿using System;
 sealed class OneDimensional : ArrayBase
 {
-    private Random _random = new Random();
-    private int[] _array;
-    public OneDimensional(bool consoleValues = false)
+    private T[] _array;
+    private IElementGenerator<T> _elementGenerator;
+    public OneDimension(IElementGenerator<T> ElementGenerator, bool consoleValues = false)
     {
-        Recreate(consoleValues);
+        _elementGenerator = ElementGenerator;
+        CreateArray(consoleValues);
     }
 
     public override void Recreate(bool consoleValues = false)
@@ -13,16 +14,17 @@ sealed class OneDimensional : ArrayBase
         CreateArray(consoleValues);
     }
 
-    public override void Print()
+    public override void Print()//МЕТОД ВЫВОДЯЩИЙ ОДНОМЕРНЫЙ МАССИВ:
     {
         Print(_array);
+        Console.WriteLine();
     }
-
-    private static void Print(int[] array)//МЕТОД ВЫВОДЯЩИЙ ОДНОМЕРНЫЙ МАССИВ:
+    
+    private static void Print(T[] array)
     {
-        foreach (int item in array)
+        for (int h = 0; h < array.Length; h++)
         {
-            Console.Write(item + " ");
+            Console.Write($"{array[h]} ");
         }
         Console.WriteLine();
     }
@@ -31,117 +33,27 @@ sealed class OneDimensional : ArrayBase
     {
         Console.WriteLine("Введите размер строки: ");
         int size = int.Parse(Console.ReadLine());
-        _array = new int[size];
-        if (!consoleValues)
-        {
-            RandomArray();
-        }
-        else
-        {
-            InputArray();
-        }
+        _array = new T[size];
+        base.CreateArray(consoleValues);
     }
 
     protected override void RandomArray()
     {
-        for (int i = 0; i < _array.Length; i++)
+        for (int i = 0; i < _array.Length;i++)
         {
-            _array[i] = _random.Next(0, 100);
+            _array[i] = _elementGenerator.GenerateRandom();
         }
     }
-
+    
     protected override void InputArray()
     {
-        Console.WriteLine("Введите строку со всеми значениями массива, разделенными пробелами: ");
+        Console.WriteLine($"Введите строку со всеми значениями массива, разделенными пробелами. ( тип должен быть {typeof(T)})");
         string input = Console.ReadLine();
-        string[] inputLst = input.Split();
-        for (int i = 0; i < _array.Length; i++)
+        string[] inputList = input.Split();
+        for (int i = 0; i< inputList.Length; i++)
         {
-            _array[i] = int.Parse(inputLst[i]);
+            T inputToType = (T)Convert.ChangeType(inputList[i], typeof(T));
+            _array[i] = inputToType;
         }
-    }
-
-
-    public override void MiddleValue()//МЕТОД ВЫВОДЯЩИЙ СРЕДНЕЕ ЗНАЧЕНИЕ МАССИВА:
-    {
-        Console.WriteLine("\nTask 1");
-        int counter = 0;
-        for (int i = 0; i < _array.Length; i++)
-        {
-            counter += _array[i];
-        }
-        Console.WriteLine(counter / _array.Length);
-    }
-
-    public void GetRidofValue()//МЕТОД УДАЛЕНИЯ ЭЛЕМЕНТОВ БОЛЬШЕ 100 ПО МОДУЛЮ:
-    {
-        Console.WriteLine("\nTask 2");
-        int counter = 0;
-        for (int i = 0; i < _array.Length; i++)
-        {
-            if (Math.Abs(_array[i]) < 100)
-            {
-                counter += 1;
-            }
-        }
-        int[] newArr = new int[counter];
-        int j = 0;
-        for (int i = 0; i < _array.Length; i++)
-        {
-            if (Math.Abs(_array[i]) < 100)
-            {
-                newArr[j] = _array[i];
-                j++;
-            }
-        }
-        foreach (var item in newArr)
-        {
-            Console.WriteLine(item);
-        }
-    }
-
-    public void NonRepeat()//МЕТОД БЕЗ ПОВТОРА:
-    {
-        Console.WriteLine("\nTask 3");
-        int newArrayLength = _array.Length;
-        for (int i = 0; i < _array.Length; i++)
-        {
-            for (int j = i; j < _array.Length; j++)
-            {
-                if (_array[i] == _array[j] && i != j)
-                {
-                    newArrayLength--;
-                    break;
-                }
-            }
-        }
-        int[] newArray = new int[newArrayLength];
-        for (int i = 0; i < newArray.Length; i++)
-        {
-            newArray[i] = int.MinValue;
-        }
-        int counter = 0;
-
-        for (int i = 0; i < _array.Length; i++)
-        {
-            if (!Exists(_array[i], newArray))
-            {
-                newArray[counter] = _array[i];
-                counter++;
-            }
-        }
-        Print(newArray);
-    }
-    private static bool Exists(int value, int[] array)
-    {
-        for (int i = 0; i < array.Length; i++)
-        {
-            if (array[i] == value)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }
-
