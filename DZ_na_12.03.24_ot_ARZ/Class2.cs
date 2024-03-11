@@ -1,31 +1,13 @@
 ﻿using System;
-interface  : InterfaceDimensional
-{
-    void PublicInputArray();
-    void PublicRandomArray();
-    void PublicCreateArray(bool consoleValues = false);
-    void MiddleValue();
-    void CreateAgain(bool consoleValues = false);
-}
 
-interface InterfaceDimensional
+class DoubleGenerator : IElementGenerator<double>
 {
-    void Print();
+    private static Random _random = new Random();
+    public double GenerateRandom()
+    {
+        int coeff = _random.Next(1, 10);
+        double number = _random.NextDouble();
+        number = Math.Round(number, 2, MidpointRounding.ToEven);
+        return number * coeff;
+    }
 }
-
-interface InterfaceOneDimensional
-{
-    void GetRidofValue();
-    void NonRepeat();
-}
-
-interface InterfaceTwoDimensional
-{
-    int GetDeterminant();
-}
-
-interface InterfaceStepArray
-{
-    void ChangeEvenNumbers();
-}
-
