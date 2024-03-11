@@ -1,23 +1,20 @@
 ﻿using System;
-public abstract class Mainclass : InterfaceDimension
+public abstract class ArrayBase : InterfaceDimension
 {
-    public void PublicInputArray()
+    protected static Random _random = new Random();
+    protected virtual void CreateArray(bool consoleValues = false)
     {
-        InputArray();
-    }
+        if (consoleValues)
+        {
+            InputArray();
+        }
+        else
+        {
+            RandomArray();
+        }
     protected abstract void InputArray();
-    public void PublicRandomArray()
-    {
-        RandomArray();
-    }
     protected abstract void RandomArray();
-    public void PublicCreateArray(bool consoleValues = false)
-    {
-        CreateArray(consoleValues);
-    }
-    protected abstract void CreateArray(bool consoleValues = false);
-    public abstract void MiddleValue();
     public abstract void Print();
-    public abstract void CreateAgain(bool consoleValues = false);
+    public abstract void Createagain(bool consoleValues = false);
 }
 
