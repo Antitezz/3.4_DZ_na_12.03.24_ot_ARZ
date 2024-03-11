@@ -1,5 +1,5 @@
 ﻿using System;
-public abstract class ArrayBase : InterfaceDimension
+public abstract class ArrayBase : InterfaceDimensional
 {
     protected static Random _random = new Random();
     protected virtual void CreateArray(bool consoleValues = false)
