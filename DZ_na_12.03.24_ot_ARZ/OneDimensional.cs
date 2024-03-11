@@ -1,5 +1,5 @@
 ﻿using System;
-sealed class OneDimensional : MainClass, InterfaceOneDimensional
+sealed class OneDimensional : ArrayBase
 {
     private Random _random = new Random();
     private int[] _array;
